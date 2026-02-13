@@ -1,20 +1,23 @@
-import { Box, Card, CardContent, Typography } from "@mui/material";
+"use client";
+
+import { Box, CircularProgress } from "@mui/material";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
+import { tokenStorage } from "./utils/auth/tokenStorage";
 
 export default function Home() {
+  useEffect(() => {
+    const token = tokenStorage.get();
+    if (token) {
+      redirect("/admin");
+    } else {
+      redirect("/login");
+    }
+  }, []);
+
   return (
-    <Box
-      sx={{ minHeight: "100dvh", display: "grid", placeItems: "center", p: 3 }}
-    >
-      <Card sx={{ width: "100%", maxWidth: 520 }}>
-        <CardContent>
-          <Typography variant="h5" sx={{ fontWeight: 700 }}>
-            User Management Admin
-          </Typography>
-          <Typography sx={{ mt: 1, color: "text.secondary" }}>
-            MUI + Next.js(App Router) の土台を構築中です。
-          </Typography>
-        </CardContent>
-      </Card>
+    <Box sx={{ minHeight: "100dvh", display: "grid", placeItems: "center" }}>
+      <CircularProgress />
     </Box>
   );
 }

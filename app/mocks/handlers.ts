@@ -130,6 +130,10 @@ type UsersUpdateBody = Partial<
   Pick<UserOutDto, "name" | "email" | "role" | "status">
 >;
 
+const DEMO_EMAIL = "admin@example.com";
+const DEMO_PASSWORD = "password";
+const DEMO_TOKEN = "demo-token-123";
+
 export const handlers = [
   http.get("/api/admin/context", () => {
     return HttpResponse.json({ comInfo: "com_001" });
@@ -181,5 +185,25 @@ export const handlers = [
     };
 
     return HttpResponse.json(USERS[index]);
+  }),
+
+  http.post("/api/auth/login", async ({ request }) => {
+    const body = (await request.json()) as {
+      email?: string;
+      password?: string;
+    };
+
+    if (body.email === DEMO_EMAIL && body.password === DEMO_PASSWORD) {
+      return HttpResponse.json({ accessToken: DEMO_TOKEN });
+    }
+
+    return HttpResponse.json(
+      { message: "Invalid credentials" },
+      { status: 401 },
+    );
+  }),
+
+  http.post("/api/auth/logout", () => {
+    return new HttpResponse(null, { status: 204 });
   }),
 ];

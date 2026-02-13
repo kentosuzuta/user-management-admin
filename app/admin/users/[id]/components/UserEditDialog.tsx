@@ -49,8 +49,18 @@ export const UserEditDialog = ({
   onConfirm,
   isSubmitting = false,
 }: UserEditDialogProps) => {
+  const trimmedName = values.name.trim();
+  const trimmedEmail = values.email.trim();
+  const isEmailValid = /.+@.+\.com$/.test(trimmedEmail);
+
   const isValid =
-    values.name.trim().length > 0 && values.email.trim().length > 0;
+    trimmedName.length > 0 && trimmedEmail.length > 0 && isEmailValid;
+
+  const isDirty =
+    trimmedName !== user.name ||
+    trimmedEmail !== user.email ||
+    values.role !== user.role ||
+    values.status !== user.status;
 
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="sm">
@@ -77,6 +87,12 @@ export const UserEditDialog = ({
             fullWidth
             required
             disabled={isSubmitting}
+            error={trimmedEmail.length > 0 && !isEmailValid}
+            helperText={
+              trimmedEmail.length > 0 && !isEmailValid
+                ? "メールアドレスは xxx@yyy.com の形式で入力してください"
+                : ""
+            }
           />
 
           <TextField
@@ -126,7 +142,7 @@ export const UserEditDialog = ({
           sx={{ minWidth: 100 }}
           variant="contained"
           onClick={onConfirm}
-          disabled={!isValid || isSubmitting}
+          disabled={!isValid || !isDirty || isSubmitting}
         >
           確定
         </Button>

@@ -1,16 +1,25 @@
-import { Card, CardContent, Typography } from "@mui/material";
+"use client";
 
-export default function AdminPage() {
-  return (
-    <Card>
-      <CardContent>
-        <Typography variant="h5" sx={{ fontWeight: 700 }}>
-          Dashboard
-        </Typography>
-        <Typography sx={{ mt: 1, color: "text.secondary" }}>
-          管理画面の土台ができました。
-        </Typography>
-      </CardContent>
-    </Card>
-  );
+import { Alert, Box, CircularProgress } from "@mui/material";
+import { DashboardContent } from "./DashboardContent";
+import { useUsersListHandler } from "./users/hooks/useUsersListHandler";
+
+export default function DashboardPage() {
+  const { rows, isLoading, error } = useUsersListHandler();
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: "grid", placeItems: "center", py: 6 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert severity="error">データ取得に失敗しました: {String(error)}</Alert>
+    );
+  }
+
+  return <DashboardContent users={rows} />;
 }
