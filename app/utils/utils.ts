@@ -4,3 +4,10 @@ export const formatDateYmd = (iso: string) => {
     d.getDate(),
   ).padStart(2, "0")}`;
 };
+
+export const normalize = (value: string) =>
+  value.replace(/\u3000/g, " ").toLowerCase();
+
+export const splitTokens = (value: string) => {
+  return normalize(value).trim().split(/\s+/).filter(Boolean);
+};

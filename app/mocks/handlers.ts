@@ -126,8 +126,60 @@ const USERS: UserOutDto[] = [
   },
 ];
 
+type UsersUpdateBody = Partial<
+  Pick<UserOutDto, "name" | "email" | "role" | "status">
+>;
+
 export const handlers = [
-  http.get("/api/users", () => {
+  http.get("/api/admin/context", () => {
+    return HttpResponse.json({ comInfo: "com_001" });
+  }),
+
+  http.get("/api/users", ({ request }) => {
+    const url = new URL(request.url);
+    const comInfo = url.searchParams.get("comInfo");
+
+    if (!comInfo) {
+      return HttpResponse.json(
+        { message: "comInfo is required" },
+        { status: 400 },
+      );
+    }
+
     return HttpResponse.json({ users: USERS });
+  }),
+
+  http.get("/api/users/:id", ({ params }) => {
+    const id = String(params.id);
+    const user = USERS.find((u) => u.id === id);
+    if (!user) return new HttpResponse(null, { status: 404 });
+    return HttpResponse.json(user);
+  }),
+
+  http.delete("/api/users/:id", ({ params }) => {
+    const id = String(params.id);
+
+    const index = USERS.findIndex((u) => u.id === id);
+    if (index === -1) return new HttpResponse(null, { status: 404 });
+
+    USERS.splice(index, 1);
+
+    return new HttpResponse(null, { status: 204 });
+  }),
+
+  http.patch("/api/users/:id", async ({ params, request }) => {
+    const id = String(params.id);
+
+    const index = USERS.findIndex((u) => u.id === id);
+    if (index === -1) return new HttpResponse(null, { status: 404 });
+
+    const body = (await request.json()) as UsersUpdateBody;
+
+    USERS[index] = {
+      ...USERS[index],
+      ...body,
+    };
+
+    return HttpResponse.json(USERS[index]);
   }),
 ];

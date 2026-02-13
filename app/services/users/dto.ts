@@ -1,7 +1,5 @@
 export type UsersListInDto = {
-  query?: string;
-  page?: number;
-  pageSize?: number;
+  comInfo: string;
 };
 
 export type UserStatusOutDto = "active" | "invited" | "suspended";
@@ -19,3 +17,23 @@ export type UserOutDto = {
 export type UsersListResponseOutDto = {
   users: UserOutDto[];
 };
+
+export type UsersGetInDto = {
+  id: string;
+};
+
+export type UsersGetResponseOutDto = UserOutDto;
+
+export type UsersDeleteInDto = {
+  id: string;
+};
+
+export type UsersUpdateInDto = {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRoleOutDto;
+  status: UserStatusOutDto;
+};
+
+export type UsersUpdateResponseOutDto = UserOutDto;

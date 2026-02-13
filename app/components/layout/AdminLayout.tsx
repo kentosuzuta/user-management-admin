@@ -162,9 +162,9 @@ export const AdminLayout = ({ title, children }: AdminLayoutProps) => {
         <Toolbar />
         <Box
           sx={{
-            mx: "auto",
+            mx: { xs: "auto", md: "325px" },
             width: "100%",
-            maxWidth: 1200,
+            maxWidth: 1536,
             px: { xs: 2, sm: 3 },
             py: { xs: 2.5, sm: 3.5 },
           }}
