@@ -27,7 +27,7 @@ export const useLoginHandler = () => {
       tokenStorage.set(res.accessToken);
       loginNotice.set();
       return true;
-    } catch (e) {
+    } catch {
       setError("ログインに失敗しました（メール/パスワードを確認してください）");
       return false;
     } finally {

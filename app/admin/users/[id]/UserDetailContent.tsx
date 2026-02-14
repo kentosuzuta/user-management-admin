@@ -43,6 +43,18 @@ export const UserDetailContent = ({
           onBack={() => router.push("/admin/users")}
         />
 
+        {editDialog.error ? (
+          <Alert severity="error">
+            更新に失敗しました: {String(editDialog.error.message)}
+          </Alert>
+        ) : null}
+
+        {deleteDialog.error ? (
+          <Alert severity="error">
+            削除に失敗しました: {String(deleteDialog.error.message)}
+          </Alert>
+        ) : null}
+
         <UserDetailSummaryCard
           user={user}
           changedFields={editDialog.changedFields}

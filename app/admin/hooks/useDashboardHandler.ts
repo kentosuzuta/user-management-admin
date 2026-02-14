@@ -22,16 +22,9 @@ export const useDashboardHandler = (users: UserOutDto[]) => {
     };
   }, [users]);
 
-  const recentUsers = useMemo(() => {
-    return [...users]
-      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-      .slice(0, 5);
-  }, [users]);
-
   return {
     total,
     statusCount,
     roleCount,
-    recentUsers,
   };
 };

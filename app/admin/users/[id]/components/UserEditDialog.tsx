@@ -51,7 +51,7 @@ export const UserEditDialog = ({
 }: UserEditDialogProps) => {
   const trimmedName = values.name.trim();
   const trimmedEmail = values.email.trim();
-  const isEmailValid = /.+@.+\.com$/.test(trimmedEmail);
+  const isEmailValid = /.+@.+\..+/.test(trimmedEmail);
 
   const isValid =
     trimmedName.length > 0 && trimmedEmail.length > 0 && isEmailValid;
@@ -90,7 +90,7 @@ export const UserEditDialog = ({
             error={trimmedEmail.length > 0 && !isEmailValid}
             helperText={
               trimmedEmail.length > 0 && !isEmailValid
-                ? "メールアドレスは xxx@yyy.com の形式で入力してください"
+                ? "メールアドレスは xxx@yyy.zzz の形式で入力してください"
                 : ""
             }
           />

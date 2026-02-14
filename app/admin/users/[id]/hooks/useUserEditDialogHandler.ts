@@ -36,12 +36,14 @@ export const useUserEditDialogHandler = ({
   const [values, setValues] = useState<UserEditFormValues>(initialValues);
   const [changedFields, setChangedFields] = useState<ChangedFields>({});
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
   const closeSnackbar = useCallback(() => {
     setIsSnackbarOpen(false);
   }, []);
 
   const openEdit = useCallback(() => {
+    setError(null);
     setValues(initialValues);
     setIsEditOpen(true);
   }, [initialValues]);
@@ -64,6 +66,7 @@ export const useUserEditDialogHandler = ({
   const confirmEdit = useCallback(async () => {
     try {
       setIsSaving(true);
+      setError(null);
 
       const next = {
         name: values.name.trim(),
@@ -87,6 +90,8 @@ export const useUserEditDialogHandler = ({
       setIsSnackbarOpen(true);
       setIsEditOpen(false);
       await onSaved?.();
+    } catch (e) {
+      setError(e instanceof Error ? e : new Error(String(e)));
     } finally {
       setIsSaving(false);
     }
@@ -98,6 +103,7 @@ export const useUserEditDialogHandler = ({
     values,
     changedFields,
     isSnackbarOpen,
+    error,
     closeSnackbar,
     openEdit,
     closeEdit,
