@@ -62,7 +62,11 @@ const DistributionCard = ({
       <Stack spacing={1.5} sx={{ mt: 2 }}>
         {rows.map((row) => (
           <Box key={row.key}>
-            <Stack direction="row" justifyContent="space-between" sx={{ mb: 0.5 }}>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              sx={{ mb: 0.5 }}
+            >
               <Typography variant="body2">{row.label}</Typography>
               <Typography variant="body2" sx={{ fontWeight: 700 }}>
                 {row.count} ({row.ratio}%)
@@ -114,11 +118,11 @@ export const DashboardContent = ({ users }: DashboardContentProps) => {
           },
         }}
       >
-        <KpiCard label="Total Users" value={total} />
-        <KpiCard label="Active Rate" value={`${activeRate}%`} />
-        <KpiCard label="New Users (7 days)" value={newUsersLast7Days} />
+        <KpiCard label="総ユーザー数" value={total} />
+        <KpiCard label="アクティブ率" value={`${activeRate}%`} />
+        <KpiCard label="直近7日間の新規ユーザー" value={newUsersLast7Days} />
         <KpiCard
-          label="Admin / Member / Viewer"
+          label="管理者 / 一般 / 閲覧"
           value={`${roleCount.admin} / ${roleCount.member} / ${roleCount.viewer}`}
         />
       </Box>
@@ -130,15 +134,22 @@ export const DashboardContent = ({ users }: DashboardContentProps) => {
           gridTemplateColumns: { xs: "1fr", lg: "repeat(2, minmax(0, 1fr))" },
         }}
       >
-        <DistributionCard title="Role Distribution" rows={roleDistribution} />
-        <DistributionCard title="Status Distribution" rows={statusDistribution} />
+        <DistributionCard title="権限別ユーザー数" rows={roleDistribution} />
+        <DistributionCard
+          title="ステータス別ユーザー数"
+          rows={statusDistribution}
+        />
       </Box>
 
       <Card>
         <CardContent>
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <Typography variant="subtitle1" sx={{ fontWeight: 800 }}>
-              Recent Users
+              最近登録されたユーザー
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Active: {statusCount.active} / Invited: {statusCount.invited} /
@@ -163,7 +174,9 @@ export const DashboardContent = ({ users }: DashboardContentProps) => {
                       {user.name.slice(0, 1)}
                     </Avatar>
                     <Box>
-                      <Typography sx={{ fontWeight: 700 }}>{user.name}</Typography>
+                      <Typography sx={{ fontWeight: 700 }}>
+                        {user.name}
+                      </Typography>
                       <Typography variant="body2" color="text.secondary">
                         {user.email}
                       </Typography>

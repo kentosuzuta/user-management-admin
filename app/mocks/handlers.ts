@@ -1,4 +1,5 @@
 import { http, HttpResponse } from "msw";
+import type { SettingsOutDto } from "../services/settings/dto";
 import { UserOutDto } from "../services/users/dto";
 
 const USERS: UserOutDto[] = [
@@ -129,10 +130,26 @@ const USERS: UserOutDto[] = [
 type UsersUpdateBody = Partial<
   Pick<UserOutDto, "name" | "email" | "role" | "status">
 >;
+type SettingsUpdateBody = Partial<SettingsOutDto>;
 
 const DEMO_EMAIL = "admin@example.com";
 const DEMO_PASSWORD = "password";
 const DEMO_TOKEN = "demo-token-123";
+
+const DEFAULT_SETTINGS: SettingsOutDto = {
+  companyName: "Demo Company",
+  timezone: "Asia/Tokyo",
+  defaultRole: "member",
+  sessionTimeoutMin: 60,
+  requireTwoFactor: false,
+  notifyUserCreated: true,
+  notifyUserUpdated: true,
+  notifyUserDeleted: true,
+};
+
+const SETTINGS_BY_COM: Record<string, SettingsOutDto> = {
+  com_001: { ...DEFAULT_SETTINGS },
+};
 
 export const handlers = [
   http.get("/api/admin/context", () => {
@@ -151,6 +168,45 @@ export const handlers = [
     }
 
     return HttpResponse.json({ users: USERS });
+  }),
+
+  http.get("/api/settings", ({ request }) => {
+    const url = new URL(request.url);
+    const comInfo = url.searchParams.get("comInfo");
+
+    if (!comInfo) {
+      return HttpResponse.json(
+        { message: "comInfo is required" },
+        { status: 400 },
+      );
+    }
+
+    const settings = SETTINGS_BY_COM[comInfo] ?? { ...DEFAULT_SETTINGS };
+    SETTINGS_BY_COM[comInfo] = settings;
+
+    return HttpResponse.json({ settings });
+  }),
+
+  http.patch("/api/settings", async ({ request }) => {
+    const url = new URL(request.url);
+    const comInfo = url.searchParams.get("comInfo");
+
+    if (!comInfo) {
+      return HttpResponse.json(
+        { message: "comInfo is required" },
+        { status: 400 },
+      );
+    }
+
+    const body = (await request.json()) as SettingsUpdateBody;
+    const current = SETTINGS_BY_COM[comInfo] ?? { ...DEFAULT_SETTINGS };
+
+    SETTINGS_BY_COM[comInfo] = {
+      ...current,
+      ...body,
+    };
+
+    return HttpResponse.json({ settings: SETTINGS_BY_COM[comInfo] });
   }),
 
   http.get("/api/users/:id", ({ params }) => {
