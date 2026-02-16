@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ユーザー管理 管理画面（Portfolio）
 
-## Getting Started
+転職活動向けに作成した、ユーザー管理画面のデモアプリです。  
+React / TypeScript / Next.js（App Router）を用いて、実務を意識した設計・実装を行っています。
 
-First, run the development server:
+---
 
-```bash
+## 1. 目的
+
+- ポートフォリオとして提示できるWebアプリを作る
+- 実務に近い形で、設計・実装・保守の方針を示す
+
+---
+
+## 2. 設計・実装で意識したポイント
+
+- 要件定義 → 設計 → 実装 → 動作確認・検証まで一連で進められる
+- UI / UX（レスポンシブ、状態管理、エラーハンドリング）を意識できる
+- API連携設計（認証、CRUD、検索・フィルタ）を整理して実装できる
+- 型安全、Lint、責務分離など品質を意識した実装ができる
+
+---
+
+## 3. 技術スタック
+
+- Next.js (App Router)
+- React
+- TypeScript
+- MUI
+- SWR
+- MSW（モックAPI）
+
+---
+
+## 4. 主な実装機能
+
+- ログイン / ログアウト（デモ認証）
+- ダッシュボード（KPI、構成比、最近登録されたユーザー）
+- ユーザー一覧（キーワード検索、ロール / ステータス絞り込み）
+- ユーザー詳細（確認ダイアログ、編集・削除）
+- 設定画面（`/api/settings` 経由で取得 / 更新）
+
+---
+
+## 5. API実装方針
+
+- フロント側は `service` 層を経由して API を呼び出し
+- 開発時は MSW で `/api/*` をモックし、フロント単体で検証可能
+- 現在の設定API:
+  - `GET /api/settings?comInfo=...`
+  - `PATCH /api/settings?comInfo=...`
+
+---
+
+## 6. ディレクトリ構成（抜粋）
+
+- `app/admin/*`: 画面コンポーネント
+- `app/admin/**/hooks/*`: 画面ロジック（状態管理・イベント）
+- `app/services/*`: DTO と API 呼び出し
+- `app/mocks/*`: MSWハンドラ
+
+---
+
+## 7. コーディング規約
+
+### 7.1 命名規則
+
+- 変数名・関数名: キャメルケース
+- 型名: パスカルケース
+- 定数名: 大文字スネークケース
+- APIレスポンス等で必要な場合は、サービス側命名を優先
+
+### 7.2 TypeScript ルール
+
+- `interface` ではなく `type` を使用
+- プロパティ名はキャメルケース
+
+### 7.3 React ルール
+
+- 関数コンポーネントを使用（クラスコンポーネントは原則不使用）
+- Props型名は `コンポーネント名 + Props`
+- カスタムフックは `use` で開始
+- イベントハンドラは `handle` で開始
+- Context名はパスカルケース
+
+### 7.4 実装ルール
+
+- 関数定義は原則アロー関数
+- 非同期処理は `async/await` に統一
+- `eslint-disable` コメント / 設定は禁止
+
+---
+
+## 8. ローカル起動手順
+
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
