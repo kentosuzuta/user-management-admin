@@ -1,7 +1,22 @@
-# ユーザー管理 管理画面（Portfolio）
+# ユーザー管理 管理画面（Next.js / TypeScript ポートフォリオ）
 
 転職活動向けに作成した、ユーザー管理画面のデモアプリです。  
 React / TypeScript / Next.js（App Router）を用いて、実務を意識した設計・実装を行っています。
+
+---
+
+## デモURL（Vercel）
+
+→ https://user-management-admin.vercel.app/
+
+※ デモのため、最初にログイン画面が表示されます。
+
+### デモアカウント
+
+- Email: demo@example.com
+- Password: password
+
+（※ 認証はデモ実装です。MSWおよびAPI Routeでモックしています）
 
 ---
 
@@ -93,5 +108,7 @@ React / TypeScript / Next.js（App Router）を用いて、実務を意識した
 
 ## 8. ローカル起動手順
 
+```bash
 npm install
 npm run dev
+```
